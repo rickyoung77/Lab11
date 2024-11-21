@@ -68,9 +68,9 @@ def calculate_assignment_stats(assignment_name, assignments, submissions):
         return "No submissions found for this assignment."
 
     # Calculate min, average, and max
-    min_score = round(min(scores))  # Round to nearest whole number
-    avg_score = round(sum(scores) / len(scores))  # Round the average
-    max_score = round(max(scores))  # Round to nearest whole number
+    min_score = round(min(scores))  # Round to the nearest whole number
+    avg_score = round(sum(scores) / len(scores))  # Ensure proper rounding of average
+    max_score = round(max(scores))  # Round to the nearest whole number
 
     # Format the output
     return f"Min: {min_score}%\nAvg: {avg_score}%\nMax: {max_score}%"
