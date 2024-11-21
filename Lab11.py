@@ -3,7 +3,6 @@ matplotlib.use('Agg')  # Use the headless Agg backend
 import matplotlib.pyplot as plt
 import os
 
-# Helper functions to process data files
 def read_students_file(file_path):
     """Reads the students file and extracts IDs and names."""
     data = {}
@@ -43,7 +42,20 @@ def read_submissions_folder(folder_path):
                         submissions.append((student_id, assignment_id, score))
     return submissions
 
-# Function to plot a histogram
+def calculate_student_grade(student_name, students, assignments, submissions):
+    """Calculates the total grade for a specific student."""
+    student_id = next((id_ for id_, name in students.items() if name == student_name), None)
+    if not student_id:
+        return "Student not found"
+    
+    total_points = sum(
+        assignments[assign_id][1] * (score / 100)
+        for student, assign_id, score in submissions
+        if student == student_id
+    )
+    percentage = round((total_points / 1000) * 100)
+    return f"{percentage}%"
+
 def plot_assignment_histogram(assignment_name, assignments, submissions):
     """Plots a histogram for a specific assignment."""
     assign_id = next((id_ for id_, (name, _) in assignments.items() if name == assignment_name), None)
@@ -56,11 +68,11 @@ def plot_assignment_histogram(assignment_name, assignments, submissions):
     plt.title(f"Histogram of Scores for {assignment_name}")
     plt.xlabel("Score Range")
     plt.ylabel("Number of Students")
-    plt.savefig(f"{assignment_name}_histogram.png")  # Save the plot as a file
-    print(f"Plot saved as '{assignment_name}_histogram.png'")
+    file_name = f"{assignment_name}_histogram.png"
+    plt.savefig(file_name)  # Save the plot to a file
+    print(f"Plot saved as '{file_name}'")
     return None
 
-# Main program
 def main():
     students = read_students_file('data/students.txt')
     assignments = read_assignments_file('data/assignments.txt')
@@ -69,7 +81,13 @@ def main():
     print("1. Student grade\n2. Assignment statistics\n3. Assignment graph\n")
     selection = input("Enter your selection: ").strip()
 
-    if selection == "3":
+    if selection == "1":
+        student_name = input("What is the student's name: ").strip()
+        result = calculate_student_grade(student_name, students, assignments, submissions)
+        print(result)
+    elif selection == "2":
+        print("Option 2 not implemented yet.")
+    elif selection == "3":
         assignment_name = input("What is the assignment name: ").strip()
         result = plot_assignment_histogram(assignment_name, assignments, submissions)
         if result:
@@ -79,5 +97,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
