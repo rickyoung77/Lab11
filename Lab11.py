@@ -68,11 +68,12 @@ def calculate_assignment_stats(assignment_name, assignments, submissions):
         return "No submissions found for this assignment."
 
     # Calculate min, average, and max
-    min_score = min(scores)
-    avg_score = sum(scores) / len(scores)
-    max_score = max(scores)
+    min_score = round(min(scores))  # Round to nearest whole number
+    avg_score = round(sum(scores) / len(scores))  # Round the average
+    max_score = round(max(scores))  # Round to nearest whole number
 
-    return f"Min: {round(min_score)}%\nAvg: {round(avg_score)}%\nMax: {round(max_score)}%"
+    # Format the output
+    return f"Min: {min_score}%\nAvg: {avg_score}%\nMax: {max_score}%"
 
 def plot_assignment_histogram(assignment_name, assignments, submissions):
     """Plots a histogram for a specific assignment."""
