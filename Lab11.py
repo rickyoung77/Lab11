@@ -56,6 +56,24 @@ def calculate_student_grade(student_name, students, assignments, submissions):
     percentage = round((total_points / 1000) * 100)
     return f"{percentage}%"
 
+def calculate_assignment_stats(assignment_name, assignments, submissions):
+    """Calculates min, max, and average scores for a specific assignment."""
+    assign_id = next((id_ for id_, (name, _) in assignments.items() if name == assignment_name), None)
+    if not assign_id:
+        return "Assignment not found"
+    
+    # Extract scores for the given assignment ID
+    scores = [score for _, assign, score in submissions if assign == assign_id]
+    if not scores:
+        return "No submissions found for this assignment."
+
+    # Calculate min, average, and max
+    min_score = min(scores)
+    avg_score = sum(scores) / len(scores)
+    max_score = max(scores)
+
+    return f"Min: {round(min_score)}%\nAvg: {round(avg_score)}%\nMax: {round(max_score)}%"
+
 def plot_assignment_histogram(assignment_name, assignments, submissions):
     """Plots a histogram for a specific assignment."""
     assign_id = next((id_ for id_, (name, _) in assignments.items() if name == assignment_name), None)
@@ -86,7 +104,9 @@ def main():
         result = calculate_student_grade(student_name, students, assignments, submissions)
         print(result)
     elif selection == "2":
-        print("Option 2 not implemented yet.")
+        assignment_name = input("What is the assignment name: ").strip()
+        result = calculate_assignment_stats(assignment_name, assignments, submissions)
+        print(result)
     elif selection == "3":
         assignment_name = input("What is the assignment name: ").strip()
         result = plot_assignment_histogram(assignment_name, assignments, submissions)
